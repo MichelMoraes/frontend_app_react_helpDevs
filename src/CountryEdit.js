@@ -6,6 +6,7 @@ import AppNavbar from './AppNavbar';
 class CountriesEdit extends Component {
 
     emptyItem = {
+        id: '',
         name: ''
         
     };
@@ -21,7 +22,7 @@ class CountriesEdit extends Component {
 
     async componentDidMount() {
         if (this.props.match.params.id !== 'new') {
-            const country = await (await fetch(`/api/v1/jpa/country/${this.props.match.params.id}`)).json();
+            const country = await (await fetch(`/api/v1/jpa/country?id=${this.props.match.params.id}`)).json();
             this.setState({item: country});
         }
     }
@@ -29,6 +30,7 @@ class CountriesEdit extends Component {
     handleChange(event) {
         const target = event.target;
         const value = target.value;
+        
         const name = target.name;
         let item = {...this.state.item};
         item[name] = value;
@@ -39,7 +41,7 @@ async handleSubmit(event) {
     event.preventDefault();
     const {item} = this.state;
 
-    await fetch('/api/v1/jpa/country/' + (item.id ? '/' + item.id : ''), {
+    await fetch('/api/v1/jpa/country?id=' + (item.id ? '/' + item.id : ''), {
         method: (item.id) ? 'PUT' : 'POST',
         headers: {
             'Accept': 'application/json',
@@ -47,7 +49,7 @@ async handleSubmit(event) {
         },
         body: JSON.stringify(item),
     });
-    this.props.history.push('/api/v1/jpa/country/');
+    this.props.history.push('/api/v1/jpa/countries');
 }
 
     render() {
@@ -59,6 +61,11 @@ async handleSubmit(event) {
             <Container>
                 {title}
                 <Form onSubmit={this.handleSubmit}>
+                <FormGroup>
+                        <Label for="name">id</Label>
+                        <Input type="text" name="name" id="id" value={item.id || ''}
+                               onChange={this.handleChange} autoComplete="id"/>
+                    </FormGroup>
                     <FormGroup>
                         <Label for="name">Name</Label>
                         <Input type="text" name="name" id="name" value={item.name || ''}
@@ -67,7 +74,7 @@ async handleSubmit(event) {
                   
                     <FormGroup>
                         <Button color="primary" type="submit">Save</Button>{' '}
-                        <Button color="secondary" tag={Link} to="/api/v1/jpa/country/">Cancel</Button>
+                        <Button color="secondary" tag={Link} to="/api/v1/jpa/countries/">Cancel</Button>
                     </FormGroup>
                 </Form>
             </Container>
