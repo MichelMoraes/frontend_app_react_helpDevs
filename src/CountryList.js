@@ -33,14 +33,14 @@ class CountryList extends Component {
     render() {
         const {countries} = this.state;
 
-        const countriesList = countries.map(countries => {
-            return <tr key={countries.id}>
-                <td style={{whiteSpace: 'nowrap'}}>{countries.name}</td>
+        const countriesList = countries.map(country => {
+            return <tr key={country.id}>
+                <td style={{whiteSpace: 'nowrap'}}>{country.name}</td>
        
                 <td>
                     <ButtonGroup>
-                        <Button size="sm" color="primary" tag={Link} to={"/api/v1/jpa/countries" + countries.id}>Edit</Button>
-                        <Button size="sm" color="danger" onClick={() => this.remove(countries.id)}>Delete</Button>
+                        <Button size="sm" color="primary" tag={Link} to={"/api/v1/jpa/country/" + country.id}>Edit</Button>
+                        <Button size="sm" color="danger" onClick={() => this.remove(country.id)}>Delete</Button>
                     </ButtonGroup>
                 </td>
             </tr>
@@ -51,14 +51,13 @@ class CountryList extends Component {
                 <AppNavbar/>
                 <Container fluid>
                     <div className="float-right">
-                        <Button color="success" tag={Link} to="/api/v1/jpa/country/">Add Country</Button>
+                        <Button color="success" tag={Link} to="/api/v1/jpa/country/new">Add Country</Button>
                     </div>
                     <h3>Countries</h3>
                     <Table className="mt-4">
                         <thead>
                         <tr>
-                            <th width="30%">Name</th>
-                            
+                            <th width="30%">Name</th>                            
                             <th width="40%">Actions</th>
                         </tr>
                         </thead>
